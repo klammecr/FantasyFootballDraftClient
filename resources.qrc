@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/ARI.png</file>
+        <file>res/ATL.png</file>
+        <file>res/BAL.png</file>
+        <file>res/BUF.png</file>
+        <file>res/CAR.png</file>
+        <file>res/CHI.png</file>
+        <file>res/CIN.png</file>
+        <file>res/CLE.png</file>
+        <file>res/DAL.png</file>
+        <file>res/DEN.png</file>
+        <file>res/DET.png</file>
+        <file>res/dunno3.png</file>
+        <file>res/GB.png</file>
+        <file>res/HOU.png</file>
+        <file>res/IND.png</file>
+        <file>res/JAX.png</file>
+        <file>res/KC.png</file>
+        <file>res/LA.png</file>
+        <file>res/LAC.png</file>
+        <file>res/MIA.png</file>
+        <file>res/MIN.png</file>
+        <file>res/NE.png</file>
+        <file>res/NFL.png</file>
+        <file>res/NFL_Draft.png</file>
+        <file>res/NO.png</file>
+        <file>res/NYG.png</file>
+        <file>res/NYJ.png</file>
+        <file>res/OAK.png</file>
+        <file>res/PHI.png</file>
+        <file>res/PIT.png</file>
+        <file>res/SEA.png</file>
+        <file>res/SF.png</file>
+        <file>res/TB.png</file>
+        <file>res/TEN.png</file>
+        <file>res/WAS.png</file>
+    </qresource>
+</RCC>
