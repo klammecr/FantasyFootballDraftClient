@@ -14,7 +14,7 @@ public:
     virtual ~CPlayerImportHelper();
     void SetPlayerData(const int&);
     inline std::list<std::shared_ptr<CDraftParticipant>>& GetPlayerList() { return m_PlayerList; }
-    inline int GetPlayerSize() {return m_PlayerList.size(); }
+    inline unsigned int GetPlayerSize() {return m_PlayerList.size(); }
 protected:
 private:
    std::list<std::shared_ptr<CDraftParticipant>> m_PlayerList;

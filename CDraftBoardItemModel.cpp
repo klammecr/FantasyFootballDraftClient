@@ -160,7 +160,7 @@ int CDraftBoardItemModel::FindColumnFromPickNumber() const
             outColumn = baseColumn;
         // Odd
         else
-            outColumn = m_Teams - baseColumn;
+            outColumn = m_Teams - 1 - baseColumn;
     }
     else
         assert(false); // need to add a new draft type
@@ -173,12 +173,15 @@ int CDraftBoardItemModel::FindPickFromRowColumn(int inRow, int inColumn) const
     int  basePick = ((inRow * columnCount()) + inColumn) + 1;
     if (m_eDraftType == DraftType::eNormal)
     {
+        // No need for anything special
         pickNum = basePick;
     }
     else if (m_eDraftType == DraftType::eSnake)
     {
-        // Odd
-        if (FindRowFromPickNumber() % 2 == 1)
+        // If we are in an odd row:
+        // Column : Number of Teams - base column
+        // Row    : Number of teams * base row
+        if (inRow % 2 == 1)
         {
             pickNum = (inRow * columnCount()) + (columnCount() - inColumn);
         }
@@ -187,6 +190,8 @@ int CDraftBoardItemModel::FindPickFromRowColumn(int inRow, int inColumn) const
             pickNum = basePick;
     }
     else
+        // TODO : ADD ERROR HERE, right now we just hard assert,
+        // ERROR : ADD DraFT OPTION
         assert(false);
     return pickNum;
 }
