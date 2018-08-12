@@ -8,10 +8,6 @@
 #include <memory>
 #include <iostream>
 
-static const char* kTypeNames[] =
-    { "Null", "False", "True", "Object", "Array", "String", "Number" };
-//QNetworkReply* networkManger->get(QNetworkRequest(QUrl("http://api.fantasy.nfl.com/v1/players/editordraftranks")));
-// http://api.fantasy.nfl.com/v1/players/editordraftranks?offset= i*50
 CPlayerImportHelper::CPlayerImportHelper()
 {
 }
@@ -19,24 +15,29 @@ CPlayerImportHelper::CPlayerImportHelper()
 CPlayerImportHelper::~CPlayerImportHelper()
 {}
 
-void CPlayerImportHelper::SetPlayerData(const int& offset)
+void CPlayerImportHelper::SetPlayerData(const int offset)
 {
-    // CK HACK: Each time we start a new import just empty old list
+    // CK: Each time we start a new import just empty old list
     if(!offset)
         m_PlayerList.clear();
+    // Ping the server address and get the data for the players
     get(QNetworkRequest(QUrl(QString("http://api.fantasy.nfl.com/v1/players/editordraftranks?format=json&offset=%1").arg(offset))));
+    // When the network reply is received run SlotReadReply
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(SlotReadReply(QNetworkReply*)));
 }
 
 void CPlayerImportHelper::SlotReadReply(QNetworkReply* pInResponse)
 {
+    // Read JSON response
     QString jsonStr = pInResponse->readAll();
     qDebug() << jsonStr;
     rapidjson::Document document;
+    // Parse the JSON for validity
     document.Parse(jsonStr.toStdString().c_str());
     if(!document.HasParseError())
     {
         const rapidjson::Value& playerArray = document["players"];
+        // TODO : Add an error here, is assert
         assert(playerArray.IsArray());
         for (rapidjson::SizeType i = 0; i < playerArray.Size(); i++) // Uses SizeType instead of size_t
         {
@@ -47,6 +48,7 @@ void CPlayerImportHelper::SlotReadReply(QNetworkReply* pInResponse)
                 int Rank = 0;
                 QString Team = "";
                 QString Position = "";
+                // Run an iterator starting at the first player attribute
                 for (rapidjson::Value::ConstMemberIterator itr = playerAttributes.MemberBegin();
                     itr != playerAttributes.MemberEnd(); ++itr)
                 {
@@ -67,13 +69,15 @@ void CPlayerImportHelper::SlotReadReply(QNetworkReply* pInResponse)
                            Position = member.c_str();
                     }
                 }
-                m_PlayerList.push_back(std::move(std::shared_ptr<CDraftParticipant>(new CDraftParticipant(ID, FName, LName, Rank, Team, Position))));
+                // Construct a Draft Participant object and add it to the player list
+                m_PlayerList.push_back(std::shared_ptr<CDraftParticipant>(new CDraftParticipant(ID, FName, LName, Rank, Team, Position)));
         }
-        qDebug() << m_PlayerList.size();
+        // Let everyone else know we are finished loading the data
         emit dataParsed();
     }
     else
     {
+       // TODO : Add an error dialogue here
        qDebug() << rapidjson::GetParseError_En(document.GetParseError());
     }
 

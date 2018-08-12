@@ -17,7 +17,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex&, int) const override;
-    void AddPlayer(std::shared_ptr<CDraftParticipant>&);
+    void AddPlayer(std::shared_ptr<CDraftParticipant>);
     inline void SetLeagueName(const QString& inName){m_LeagueName = inName;}
     inline void SetNumTeams(const int inTeams){m_Teams = inTeams;}
     inline void SetRounds(const int inRounds) {m_Rounds = inRounds;}

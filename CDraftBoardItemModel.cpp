@@ -76,9 +76,9 @@ QModelIndex CDraftBoardItemModel::index(int row, int col, const QModelIndex& par
 }
 
 
-void CDraftBoardItemModel::AddPlayer(std::shared_ptr<CDraftParticipant>& inParticipant)
+void CDraftBoardItemModel::AddPlayer(std::shared_ptr<CDraftParticipant> inParticipant)
 {
-    if (m_UpcomingPick < (rowCount() * columnCount() + 1) && !inParticipant->GetIsSelected())
+    if (inParticipant != nullptr && m_UpcomingPick < (rowCount() * columnCount() + 1) && !inParticipant->GetIsSelected())
     {
         m_SelectedPlayerMap.insert(std::make_pair(m_UpcomingPick, inParticipant));
         // add some logic regarding figuring out row and column

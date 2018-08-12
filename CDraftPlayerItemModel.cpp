@@ -208,15 +208,15 @@ void CDraftPlayerItemModel::MarkPlayerSelected(const QModelIndex& inIndex)
     }
 }
 
-std::shared_ptr<CDraftParticipant>& CDraftPlayerItemModel::GetPlayerRef(const QModelIndex& inIndex)
+std::shared_ptr<CDraftParticipant> CDraftPlayerItemModel::GetPlayerPtr(const QModelIndex& inIndex)
 {
+    std::shared_ptr<CDraftParticipant> pParticipant = nullptr;
     if (inIndex.isValid())
     {
         if (m_PlayerMap.find(inIndex.internalId()) != m_PlayerMap.end())
         {
-            return m_PlayerMap.at(inIndex.internalId());
+            pParticipant = m_PlayerMap.at(inIndex.internalId());
         }
     }
-    std::shared_ptr<CDraftParticipant> returnPtr;
-    return returnPtr;
+    return pParticipant;
 }

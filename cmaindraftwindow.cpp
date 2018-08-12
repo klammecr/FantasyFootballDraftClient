@@ -93,7 +93,8 @@ void CMainDraftWindow::HandleModelDataTransfer()
             ui->m_pAvailPlayerTblView->setSortingEnabled(true);
         }
         else
-        {// ERROR: SHIT NO PARTICIPANTS WERE LOADED
+        {
+           // TODO : Add error dialogue, no participants found
         }
     }
     else
@@ -169,7 +170,7 @@ void CMainDraftWindow::HandleDraftPlayer()
                 QModelIndex indexToChange = bAreUsingAProxy ? proxyModel->mapToSource(indexList.at(0)) : indexList.at(0);
                 if (pDraftBoardModel && !pDraftBoardModel->GetDraftDone())
                 {
-                    pDraftBoardModel->AddPlayer(m_pSourceModel->GetPlayerRef(indexToChange));
+                    pDraftBoardModel->AddPlayer(m_pSourceModel->GetPlayerPtr(indexToChange));
                     m_pSourceModel->MarkPlayerSelected(indexToChange);
                     ui->m_pDraftBoardTblView->resizeRowsToContents();
                     ui->m_pDraftBoardTblView->resizeColumnsToContents();

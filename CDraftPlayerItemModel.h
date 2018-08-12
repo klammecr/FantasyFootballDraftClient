@@ -19,7 +19,7 @@ public:
     QModelIndex index(int, int, const QModelIndex& parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex&) const;
     void MarkPlayerSelected (const QModelIndex&);
-    std::shared_ptr<CDraftParticipant>& GetPlayerRef(const QModelIndex&);
+    std::shared_ptr<CDraftParticipant> GetPlayerPtr(const QModelIndex&);
     inline std::map<QString, int>& GetByeMap() { return m_ByeWeekMap; }
 protected:
     bool setHeaderData(int, Qt::Orientation, const QVariant&, int) override;
