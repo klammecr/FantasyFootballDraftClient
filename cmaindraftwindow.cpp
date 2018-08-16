@@ -7,8 +7,13 @@
 #include "CDraftBoardItemModel.h"
 #include "CDraftPlayerItemModel.h"
 #include "CAvailablePlayerSortFilterModel.h"
+#include "CAvailablePlayerFilterDlg.h"
 #include <memory>
+
+// QT Includes
 #include <QMessageBox>
+#include <QShortcut>
+#include <QKeySequence>
 
 CMainDraftWindow::CMainDraftWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,7 +36,6 @@ CMainDraftWindow::CMainDraftWindow(QWidget *parent) :
 
     // Doing pointer resets and model setting
     m_pSourceModel.reset(new CDraftPlayerItemModel());
-    pItemModel->SetByeMap(m_pSourceModel->GetByeMap());
     std::unique_ptr<CAvailablePlayerSortFilterModel> pAvailablePlayerProxy(new CAvailablePlayerSortFilterModel);
     ui->m_pDraftBoardTblView->setModel(pItemModel.release());
     ui->m_pAllPlayersTblView->setModel(m_pSourceModel.get());
@@ -39,8 +43,11 @@ CMainDraftWindow::CMainDraftWindow(QWidget *parent) :
     pAvailablePlayerProxy->setDynamicSortFilter(true);
     pAvailablePlayerProxy->setSourceModel(m_pSourceModel.get());
     ui->m_pAvailPlayerTblView->setModel(pAvailablePlayerProxy.release());
+
+    // Connecting signals and slots
     connect(ui->buttonDraftPlayer, SIGNAL(clicked(bool)), this, SLOT(HandleDraftPlayer()));
     connect(m_pImportHelper.get(), SIGNAL(dataParsed()), this, SLOT(HandleModelDataTransfer()));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(HandleTabSelectionChange(int)));
 }
 
 CMainDraftWindow::~CMainDraftWindow()
@@ -50,15 +57,50 @@ CMainDraftWindow::~CMainDraftWindow()
 
 void CMainDraftWindow::SetupMenus()
 {
-    QAction* pImportPlayers = new QAction("Import Players from NFL.com", this);
-    QAction* pNewDraft = new QAction("Start a new Draft", this);
-    ui->m_pFileMenu->addAction(pImportPlayers);
-    ui->m_pFileMenu->addAction(pNewDraft);
-    connect(pImportPlayers, SIGNAL(triggered()), this, SLOT(HandlePlayerImport()));
-    connect(pNewDraft, SIGNAL(triggered()), this, SLOT(HandleNewDraft()));
+    // Set a shortcut for filtering players (CTRL-F)
+    ui->m_pFilterAvailPlayers->setShortcut(Qt::CTRL & Qt::Key_F);
+    // Action is disabled by default.
+    // Default tab is draft board, when we switch to available players we will enable the action
+    ui->m_pFilterAvailPlayers->setEnabled(false);
+
+    // Connect actions to signals and slots
+    connect(ui->m_pFilterAvailPlayers, SIGNAL(triggered()), this, SLOT(HandleFilterPlayers()) );
+    connect(ui->m_pImportPlayers, SIGNAL(triggered()), this, SLOT(HandlePlayerImport()));
+    connect(ui->m_pStartDraft, SIGNAL(triggered()), this, SLOT(HandleNewDraft()));
 }
 
-const bool CMainDraftWindow::HandlePlayerImport()
+
+void CMainDraftWindow::HandleTabSelectionChange(int inTabSelection)
+{
+    // TODO : Finish me
+
+    CAvailablePlayerSortFilterModel* pDraftBoardModel = qobject_cast<CAvailablePlayerSortFilterModel*>(ui->m_pAvailPlayerTblView->model());
+    // See if our data is loaded
+    if (pDraftBoardModel->columnCount() > 0 && pDraftBoardModel->rowCount() > 0)
+    {
+        // Draft Board
+         if(inTabSelection == 0)
+         {
+             ui->m_pFilterAvailPlayers->setEnabled(false);
+         }
+         // Available Players
+         else if(inTabSelection == 1)
+         {
+             ui->m_pFilterAvailPlayers->setEnabled(true);
+         }
+         // All Players
+         else if(inTabSelection == 2)
+         {
+             ui->m_pFilterAvailPlayers->setEnabled(false);
+         }
+         else
+         {
+             // TODO : Add error message, tab doesnt exist
+         }
+    }
+}
+
+bool CMainDraftWindow::HandlePlayerImport()
 {
     // Contact the nfl.com Fantasy API and get all players
     // Parse out the JSON response if it is valid
@@ -184,5 +226,30 @@ void CMainDraftWindow::HandleDraftPlayer()
         QMessageBox* msg = new QMessageBox(QMessageBox::Icon::Warning, "Invalid Draft Format", "Invalid Draft Format, need at least 1 Team and 1 Round");
         msg->setParent(this);
         msg->show();
+    }
+}
+
+void CMainDraftWindow::HandleFilterPlayers()
+{
+    // Create a new filter dialog
+    CAvailablePlayerFilterDlg* pAPFiltDlg = new CAvailablePlayerFilterDlg(this);
+    connect(pAPFiltDlg, SIGNAL(accepted()), this, SLOT(HandleSendFilterParameters()));
+    pAPFiltDlg->show();
+}
+
+//Get the data from the dialog and send it to the model
+void CMainDraftWindow::HandleSendFilterParameters()
+{
+    CAvailablePlayerFilterDlg* senderDlg = qobject_cast<CAvailablePlayerFilterDlg*>(sender());
+    // If this is called correctly by the filter dialog
+    if (senderDlg)
+    {
+        // TODO : Implement
+        PairedStringList params = senderDlg->GetParameterList();
+        // Get the model for the available player view
+        CAvailablePlayerSortFilterModel* pAPModel = qobject_cast<CAvailablePlayerSortFilterModel*>(ui->m_pAvailPlayerTblView->model());
+        pAPModel->SetFilterParameters(params);
+        ui->m_pAvailPlayerTblView->resizeRowsToContents();
+        ui->m_pAvailPlayerTblView->resizeColumnsToContents();
     }
 }

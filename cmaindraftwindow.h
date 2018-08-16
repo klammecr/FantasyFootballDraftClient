@@ -28,11 +28,14 @@ private:
     std::shared_ptr<CDraftPlayerItemModel> m_pSourceModel;
 // Definition for slots
 public slots:
-    const bool HandlePlayerImport();
+    void HandleTabSelectionChange(int);
+    bool HandlePlayerImport();
     void HandleNewDraft();
     void HandleNewDraftFinished();
     void HandleModelDataTransfer();
     void HandleDraftPlayer();
+    void HandleFilterPlayers();
+    void HandleSendFilterParameters();
 };
 
 #endif // CMAINDRAFTWINDOW_H

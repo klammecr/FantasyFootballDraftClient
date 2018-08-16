@@ -38,13 +38,10 @@ QVariant CDraftBoardItemModel::data(const QModelIndex& inIndex, int inRole) cons
         if (inRole == Qt::DisplayRole)
         {
             // First Last \n Position \n Bye: Number
-            int byeWeek = -1;
-            if (m_ByeMap.find(pParticipant->GetTeam()) != m_ByeMap.end())
-                byeWeek = m_ByeMap.at(pParticipant->GetTeam());
             QString outData = QString("%1 %2\n%3\nBye: %4").arg(pParticipant->GetFirst())
                     .arg(pParticipant->GetLast())
                     .arg(participantPosition)
-                    .arg(byeWeek);
+                    .arg(pParticipant->GetBye());
             returnVal = outData;
         }
         else if (inRole == Qt::BackgroundColorRole)

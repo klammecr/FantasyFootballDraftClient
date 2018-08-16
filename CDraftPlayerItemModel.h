@@ -17,10 +17,9 @@ public:
     void SetPlayerMap(std::list<std::shared_ptr<CDraftParticipant>>&);
     void SetHeaders();
     QModelIndex index(int, int, const QModelIndex& parent = QModelIndex()) const override;
-    Qt::ItemFlags flags(const QModelIndex&) const;
+    Qt::ItemFlags flags(const QModelIndex&) const override;
     void MarkPlayerSelected (const QModelIndex&);
     std::shared_ptr<CDraftParticipant> GetPlayerPtr(const QModelIndex&);
-    inline std::map<QString, int>& GetByeMap() { return m_ByeWeekMap; }
 protected:
     bool setHeaderData(int, Qt::Orientation, const QVariant&, int) override;
     QVariant headerData(int, Qt::Orientation, int) const override;
@@ -29,10 +28,6 @@ protected:
 private:
     // Internal data structure for all players stored
     std::map<int, std::shared_ptr<CDraftParticipant>> m_PlayerMap;
-
-    // Variable which has team abbriev. as key and week# as value
-    std::map<QString, int> m_ByeWeekMap;
-
     QStringList m_HeaderColumnData;
 };
 #endif // CDRAFTPLAYERITEMMODEL_H

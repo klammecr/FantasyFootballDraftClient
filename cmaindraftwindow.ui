@@ -103,11 +103,14 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="m_pImportPlayers"/>
+    <addaction name="m_pStartDraft"/>
    </widget>
    <widget class="QMenu" name="m_pEditMenu">
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="m_pFilterAvailPlayers"/>
    </widget>
    <widget class="QMenu" name="m_pOptionsMenu">
     <property name="title">
@@ -118,6 +121,21 @@
    <addaction name="m_pEditMenu"/>
    <addaction name="m_pOptionsMenu"/>
   </widget>
+  <action name="m_pImportPlayers">
+   <property name="text">
+    <string>Import Players from NFL.com</string>
+   </property>
+  </action>
+  <action name="m_pStartDraft">
+   <property name="text">
+    <string>New Draft</string>
+   </property>
+  </action>
+  <action name="m_pFilterAvailPlayers">
+   <property name="text">
+    <string>Filter Available Players</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

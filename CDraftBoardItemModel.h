@@ -27,7 +27,6 @@ public:
     void ResetModel();
     QModelIndex index(int, int, const QModelIndex& = QModelIndex()) const override;
     const bool GetDraftDone() { return m_bDraftDone; }
-    inline void SetByeMap (std::map<QString, int>& inMap) { m_ByeMap = inMap; }
 protected:
     bool setHeaderData(int, Qt::Orientation, const QVariant&, int) override;
     QVariant headerData(int, Qt::Orientation, int) const override;
@@ -42,7 +41,6 @@ private:
     DraftType m_eDraftType;
     int m_UpcomingPick;
     std::map<int, QVariant> m_HeaderMap;
-    std::map<QString, int> m_ByeMap;
     bool m_bDraftDone;
 };
 

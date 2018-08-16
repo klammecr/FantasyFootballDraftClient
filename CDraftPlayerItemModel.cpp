@@ -11,41 +11,6 @@
 //*******************************************************************
 CDraftPlayerItemModel::CDraftPlayerItemModel()
 {
-    QStringList weekFive;
-    weekFive << "ATL" << "DEN" << "NO"<< "WAS";
-    for(QString m : weekFive)
-        m_ByeWeekMap.insert(std::make_pair(m, 5));
-
-    QStringList weekSix;
-    weekSix << "BUF" << "CIN" << "DAL" <<"SEA";
-    for(QString m : weekSix)
-        m_ByeWeekMap.insert(std::make_pair(m, 6));
-
-    QStringList weekSeven;
-    weekSeven << "DET" << "HOU";
-    for(QString m : weekSeven)
-        m_ByeWeekMap.insert(std::make_pair(m, 7));
-
-    QStringList weekEight;
-    weekEight << "ARI" << "GB" << "JAX" << "LA" << "NYG" << "TEN";
-    for(QString m : weekEight)
-        m_ByeWeekMap.insert(std::make_pair(m, 8));
-
-    QStringList weekNine;
-    weekNine << "CHI" << "CLE" << "LAC" << "MIN" << "NE" << "PIT";
-    for(QString m : weekNine)
-        m_ByeWeekMap.insert(std::make_pair(m, 9));
-
-    QStringList weekTen;
-    weekTen << "BAL" << "KC" << "OAK" << "PHI";
-    for(QString m : weekTen)
-        m_ByeWeekMap.insert(std::make_pair(m, 10));
-
-    QStringList weekEleven;
-    weekEleven << "CAR" << "IND" << "MIA" << "NYJ" << "SF" << "TB";
-    for(QString m : weekEleven)
-        m_ByeWeekMap.insert(std::make_pair(m, 11));
-
     m_HeaderColumnData << "Team" << "Rank" << "Name" << "Position" << "Bye Week" << "Database ID";
 }
 
@@ -62,6 +27,7 @@ int CDraftPlayerItemModel::columnCount(const QModelIndex&) const
     return columnCount;
 }
 
+// Getting the data depending on the role
 QVariant CDraftPlayerItemModel::data(const QModelIndex& inIndex, int inRole) const
 {
     QVariant returnVal = QVariant();
@@ -69,13 +35,15 @@ QVariant CDraftPlayerItemModel::data(const QModelIndex& inIndex, int inRole) con
     CDraftParticipant* pPlayer = nullptr;
     if (m_PlayerMap.find(internalID) != m_PlayerMap.end())
     {
-        pPlayer = m_PlayerMap.at(internalID).get();;
+        pPlayer = m_PlayerMap.at(internalID).get();
     }
+    // Get the actual "data" in the cell
     if (inRole == Qt::UserRole)
     {
         if (pPlayer)
             returnVal = pPlayer->GetIsSelected();
     }
+    // Strike out player info if already selected
     else if (inRole == Qt::FontRole)
     {
         QFont font;
@@ -120,9 +88,9 @@ QVariant CDraftPlayerItemModel::data(const QModelIndex& inIndex, int inRole) con
                     returnVal = pPlayer->GetPosition();
                 else if (desiredData == "Team" && inRole == Qt::DecorationRole)
                     returnVal = QPixmap(QString(":/res/%1.png").arg(pPlayer->GetTeam()));
-                else if (desiredData == "Bye Week" && inRole == Qt::DisplayRole && m_ByeWeekMap.find(pPlayer->GetTeam()) != m_ByeWeekMap.end())
+                else if (desiredData == "Bye Week" && inRole == Qt::DisplayRole)
                 {
-                    returnVal = m_ByeWeekMap.at(pPlayer->GetTeam());
+                    returnVal = pPlayer->GetBye();
                 }
                 else if (desiredData == "Database ID"  && inRole == Qt::DisplayRole)
                     returnVal = pPlayer->GetID();

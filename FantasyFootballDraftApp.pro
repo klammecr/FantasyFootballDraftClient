@@ -31,7 +31,10 @@ SOURCES += \
     CDraftBoardItemModel.cpp \
     CDraftDetailsDlg.cpp \
     CDraftPlayerItemModel.cpp \
-    CAvailablePlayerSortFilterModel.cpp
+    CAvailablePlayerSortFilterModel.cpp \
+    CAvailablePlayerFilterDlg.cpp
+
+PRECOMPILED_HEADER = stdafx.h
 
 HEADERS += \
     CPlayerImportHelper.h \
@@ -40,11 +43,14 @@ HEADERS += \
     CDraftBoardItemModel.h \
     CDraftDetailsDlg.h \
     CDraftPlayerItemModel.h \
-    CAvailablePlayerSortFilterModel.h
+    CAvailablePlayerSortFilterModel.h \
+    CAvailablePlayerFilterDlg.h \
+    stdafx.h
 
 FORMS += \
         cmaindraftwindow.ui \
-    draftdetailsdlg.ui
+    draftdetailsdlg.ui \
+    cavailableplayerfilterdlg.ui
 
 INCLUDEPATH += "3rdParty"
 
