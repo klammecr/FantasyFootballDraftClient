@@ -58,7 +58,7 @@ CMainDraftWindow::~CMainDraftWindow()
 void CMainDraftWindow::SetupMenus()
 {
     // Set a shortcut for filtering players (CTRL-F)
-    ui->m_pFilterAvailPlayers->setShortcut(Qt::CTRL & Qt::Key_F);
+    ui->m_pFilterAvailPlayers->setShortcut(QKeySequence("Ctrl+F"));
     // Action is disabled by default.
     // Default tab is draft board, when we switch to available players we will enable the action
     ui->m_pFilterAvailPlayers->setEnabled(false);
