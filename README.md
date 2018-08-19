@@ -5,12 +5,12 @@ This is a project that I will likely continue to develop each year. I decided to
 
 # WORK LOG
 1. August14th - August20th 2017 
-*~ 40-45 hours of work estimated
-*base functionality was worked out for a trial run for the August 20th draft.
+** ~ 40-45 hours of work estimated
+** Base functionality was worked out for a trial run for the August 20th draft.
 2. August 13th - August 17th 2018
-* 20 Hours of work estimated
-* Added filtering system and a temporary filtering dialog which will be thinned down for improved UI
-* Refactoring a lot of code to prepare for next year's features
-* Changed the Add button from a plain yellow to a much fresher green with a plus icon
-* Added Remove functionality with a red button with an "X" icon
+** 20 Hours of work estimated
+** Added filtering system and a temporary filtering dialog which will be thinned down for improved UI
+** Refactoring a lot of code to prepare for next year's features
+** Changed the Add button from a plain yellow to a much fresher green with a plus icon
+** Added Remove functionality with a red button with an "X" icon
 
